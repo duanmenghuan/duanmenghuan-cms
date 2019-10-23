@@ -96,9 +96,12 @@
 		 ORDER BY created DESC 
 	</select>
 	
-	 <select id="oneArticle" resultType="com.dmh.bean.Article">
-	 	SELECT * FROM cms_article WHERE id =#{id} and deleted = '0'
-	 </select>
+		<select id="oneArticle" resultMap="articleMapper">
+		SELECT *
+		 FROM cms_article
+		 WHERE id=#{id}
+		 AND deleted=0
+	</select>
 	
 
 	
