@@ -3,8 +3,8 @@ package com.dmh.bean;
 import java.io.Serializable;
 
 /**
- * 分类的实体Bean
- * @author zhuzg
+ * 小分类的实体Bean
+ * @author  duanmenghuan
  *
  */
 public class Cat implements Serializable {
@@ -14,9 +14,9 @@ public class Cat implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5865518773522383266L;
-	private Integer id;
+	private Integer id;  
 	private String  name;
-	private Integer  channelId;
+	private Integer  channelId; //大分类ID
 	
 	public Integer getId() {
 		return id;

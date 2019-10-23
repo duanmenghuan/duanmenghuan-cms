@@ -2,7 +2,7 @@ package com.dmh.comon;
 
 /**
  * 常量类
- * @author zhuzg
+ * @author duanmenghuan
  *
  */
 public class ConstClass {
@@ -11,9 +11,14 @@ public class ConstClass {
 	 */
 	public static final String SESSION_USER_KEY="SESSION_USER_KEY";
 	
-	// 用户的角色  0 是普通用户
-	public static final int USER_ROLE_GENERAL=0;//
-	public static final int USER_ROLE_ADMIN=1;// 管理员
+	/**
+	 *  普通用户
+	 */
+	public static final int USER_ROLE_GENERAL=0;
+	/**
+	 * 管理用户
+	 */
+	public static final int USER_ROLE_ADMIN=1;
 	
 	
 }

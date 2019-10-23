@@ -2,24 +2,113 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mmcro.cms.dao.ArticleMapper">
+<mapper namespace="com.dmh.dao.ArticleMapper">
 	<resultMap type="article" id="articleMapper">
 		<id column="id" property="id" />
 		<result column="channel_id" property="channelId"/>
 		<result column="category_id" property="categoryId"/>
 		<result column="user_id" property="userId"/>
+		<association property="user" column="user_id" 
+		   select="com.dmh.dao.UserMapper.findUserById" />
+	    <association property="channel" column="channel_id" 
+		   select="com.dmh.dao.ChannelMapper.findById" />
+		<association property="cat" column="category_id" 
+		   select="com.dmh.dao.CatMapper.findById" />
+		   <association property="tags" column="id" 
+		   select="findTagsByArticleId" />   
 	</resultMap>
+	
+	
+	 <select id="findTagsByArticleId" resultType="java.lang.String">
+	 	SELECT GROUP_CONCAT(tagname) tags 
+  			FROM cms_article_tag_middle m  JOIN cms_tag  t ON m.tid=t.id 
+  			WHERE m.aid= #{value}
+			GROUP BY m.aid
+	 </select>
+	 
+	     <!--  获取ID 交给 tagBean对象 -->
+	 	<insert id="addTag" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+			INSERT INTO cms_tag(tagname) values(#{tagname})
+		</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<!-- 根据文章的分类和频道获取文章 -->
 	<select id="list" resultMap="articleMapper">
-		SELECT id,title,picture,channel_id,category_id,user_id,
-		        hits,hot,status,created,updated,commentCnt
-		 FROM cms_article
-		 WHERE channel_id=#{chnId}
-		 <if test="catId!=0">
-		 	AND category_id={catId}
-		 </if>       
+		 SELECT 
+			   id,title,picture,channel_id,category_id,user_id,
+		       hits,hot,status,created,updated,commentCnt,deleted
+		 FROM cms_article 
+		 	   WHERE channel_id=#{chnId}  and status =1
+		 	  <if test="catId!=0">
+		 	   AND category_id=#{catId}
+		     </if>  
+		      AND  status=1 and deleted =0
 	</select>
 	
+	
+	<select id="articleList" resultMap="articleMapper">
+		SELECT 
+			id,title,picture,channel_id,category_id,user_id,
+		 	hits,hot,STATUS,created,updated,commentCnt,deleted
+		 FROM cms_article 
+		   	WHERE hot>0 and STATUS =1  and deleted=0 ORDER BY hot DESC , created DESC   
+	</select>
+	
+	<select id="lastlist" resultMap="articleMapper">
+		SELECT 
+			id,title,picture,channel_id,category_id,user_id,
+		 	hits,hot,STATUS,created,updated,commentCnt,deleted 
+		 FROM cms_article 
+		 WHERE STATUS ='1' AND deleted = '0'
+		 ORDER BY created DESC  limit #{value}
+	</select>
+	
+	<select id="listByUserId" resultMap="articleMapper">
+		SELECT 
+			id,title,picture,channel_id,category_id,user_id,
+		 	hits,hot,STATUS,created,updated,commentCnt 
+		 FROM cms_article 
+		 WHERE user_id=#{id}
+		 AND deleted=0  
+	</select>
+	
+	<insert id="add"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		
+		INSERT INTO cms_article(title,content,picture,channel_id,category_id,user_id,hits,hot,status,deleted,created,updated,commentCnt)
+		  values(#{title},#{content},#{picture},#{channelId},#{categoryId},#{userId},0,0,0,0,now(),now(),0)
+	
+	</insert>
+	
+		<select id="listAdmin" resultMap="articleMapper">
+		SELECT 
+			id,title,picture,channel_id,category_id,user_id,
+		 	hits,hot,STATUS,created,updated
+		 FROM cms_article 
+		 WHERE deleted=0
+		 ORDER BY created DESC 
+	</select>
+	
+	 <select id="oneArticle" resultType="com.dmh.bean.Article">
+	 	SELECT * FROM cms_article WHERE id =#{id} and deleted = '0'
+	 </select>
+	
+
+	
+	<!-- <update id="updateStatus">
+		UPDATE cms_article set status=#{status},updated=now() WHERE id=#{id}
+	</update>
+	
+	<update id="updateHot">
+		UPDATE cms_article set hot=#{status},updated=now() WHERE id=#{id}
+	</update> -->
 </mapper>
   
   

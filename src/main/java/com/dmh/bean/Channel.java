@@ -1,7 +1,11 @@
 package com.dmh.bean;
 
 import java.io.Serializable;
-
+/**
+ * 
+ * @author lt 大分类
+ *
+ */
 public class Channel implements Serializable {
 	
 	
@@ -11,7 +15,7 @@ public class Channel implements Serializable {
 	 */
 	private static final long serialVersionUID = 1130146385295694815L;
 
-	private Integer id;
+	private Integer id;   
 	private String  name;
 	private String description;
 	private String icon;

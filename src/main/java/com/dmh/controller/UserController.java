@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dmh.bean.Article;
 import com.dmh.bean.User;
 import com.dmh.comon.ConstClass;
+import com.dmh.service.ArticleService;
 import com.dmh.service.UserService;
+import com.dmh.web.PageUtils;
+import com.github.pagehelper.PageInfo;
 
 @Controller
 @RequestMapping("user")
@@ -23,12 +28,13 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	ArticleService  articleService;
 	
 	
 	
-    //@PostMapping// 只能接受post方法的请求
-	//@RequestMapping(value = "register",method=RequestMethod.GET)
-	@GetMapping("register")  // 只接受get的请求
+    //只能接受GET请求
+	@GetMapping("register") 
 	public String register() {
 		return "user/register";
 	}
@@ -48,8 +54,8 @@ public class UserController {
 	public boolean checkExist(String username) {
 		return !userService.checkUserExist(username);
 	}
-	
-	@PostMapping("register")  // 只接受POst的请求\
+	//只能接受POST请求
+	@PostMapping("register")
 	public String register(HttpServletRequest request,
 			@Validated User user,
 			BindingResult errorResult) {
@@ -81,7 +87,7 @@ public class UserController {
 		return "user/login";
 	}
 	
-	@PostMapping("login")  // 只接受POst的请求
+	@PostMapping("login")  
 	public String login(HttpServletRequest request,
 			@Validated User user,
 			BindingResult errorResult) {
@@ -92,16 +98,17 @@ public class UserController {
 		
 		//登录
 		User loginUser = userService.login(user);
+		System.out.println("loginUser is " +loginUser);
 		if(loginUser==null) {
 			request.setAttribute("errorMsg", "用户名密码错误");
 			return "user/login";
 		}else {
 			request.getSession().setAttribute(ConstClass.SESSION_USER_KEY, loginUser);
 			if(loginUser.getRole()==ConstClass.USER_ROLE_GENERAL) {
-				
 				return "redirect:../index";	
+				
 			}else if(loginUser.getRole()==ConstClass.USER_ROLE_ADMIN){
-				return "redirect:home";		
+				return "redirect:../admin/index";	
 			}else {
 				// 其他情况
 				return "user/login";
@@ -110,8 +117,40 @@ public class UserController {
 		
 	}
 	
+	/**
+	 * 进入个人主业
+	 * @return
+	 */
+	@RequestMapping("home")
+	public String home(HttpServletRequest request) {
+		return  "my/home";	
+
+	}
+	/**
+	 * 获取个人文章
+	 * @return
+	 */
+	@RequestMapping("myarticlelist")
+	public String myarticle(HttpServletRequest request,@RequestParam(defaultValue="1")int page) 
+	{
+		User user = (User)request.getSession().getAttribute(ConstClass.SESSION_USER_KEY);
+		PageInfo<Article> pageInfo = articleService.myarticle(user.getId(),page);
+		
+		PageUtils.page(request,"/user/myarticlelist",5,pageInfo.getList(),(long)pageInfo.getSize(), pageInfo.getPageNum());
+		request.setAttribute("pageArticles",pageInfo);
+		return "/my/list";
+	}
 	
-	
-	
+	/**
+	 * 删除用户自己的文章
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("delArticle")
+	@ResponseBody
+	public boolean delArticle(Integer id) 
+	{
+		return articleService.remove(id)>0;
+	}
 
 }

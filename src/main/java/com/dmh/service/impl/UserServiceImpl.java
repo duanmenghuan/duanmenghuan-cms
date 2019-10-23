@@ -1,17 +1,24 @@
 package com.dmh.service.impl;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bw.utility.Md5Utils;
 import com.dmh.bean.User;
 import com.dmh.dao.UserMapper;
+import com.dmh.service.ArticleService;
 import com.dmh.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 
 /**
  * 
- * @author zhuzg
+ * @author dmh
  *
  */
 @Service
@@ -19,6 +26,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserMapper userMapper;
+	
+	@Autowired
+	ArticleService  articleService;
 	
 
 	/**
@@ -61,5 +71,28 @@ public class UserServiceImpl implements UserService {
 		return null!=userMapper.findByName(username);
 		
 	}
+	
+	/**
+	 *  进入个人中心获取我的文章
+	 * @param request
+	 * @return
+	 */
+	public  String myArticle(HttpServletRequest request) {
+		return null;
+	}
+
+	@Override
+	public PageInfo<User> userlist(int page,String name) {
+		// TODO Auto-generated method stub
+		PageHelper.startPage(page,10);
+		return new PageInfo<User>(userMapper.userlist(name));
+	}
+
+	@Override
+	public int update1(int locked, int userid) {
+		// TODO Auto-generated method stub
+		return  userMapper.userlist1(locked,userid);
+	}
+
 
 }

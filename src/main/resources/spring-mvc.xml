@@ -24,6 +24,8 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/resource/**"/>
+			<mvc:exclude-mapping path="/article/show"/>
+			<mvc:exclude-mapping path="/pic/**"/>
 			<mvc:exclude-mapping path="/index"/>
 			<mvc:exclude-mapping path="/user/login"/>
 			<mvc:exclude-mapping path="/user/register"/>
@@ -33,6 +35,11 @@
 		
 	</mvc:interceptors>
 	
+	<!-- 上传下载配置 -->	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+		<property name="maxUploadSize" value="10485760000"></property>
+	</bean>
 	
 	
 	

@@ -1,6 +1,9 @@
 package com.dmh.service;
 
+import java.util.List;
+
 import com.dmh.bean.User;
+import com.github.pagehelper.PageInfo;
 
 public interface UserService {
 	
@@ -12,6 +15,10 @@ public interface UserService {
 	 * @return
 	 */
 	boolean checkUserExist(String username);
+	
+	PageInfo<User> userlist(int page, String name);
+	
+	int update1(int locked, int userid);
 	
 
 }
