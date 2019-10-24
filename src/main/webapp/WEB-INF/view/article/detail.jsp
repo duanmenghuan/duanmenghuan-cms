@@ -32,7 +32,7 @@
 				</form>
 			</div>
 				<hr>
-				评论数量：${article.commentCnt }
+				评论数量：${article.commentCnt}
 			</dd>
 			<dd><div id="commentList"></div></dd>
 			
@@ -44,10 +44,10 @@
 
 
 
-	/* 
-	$(function(){
-		$("#commentList").load("/commnent/getlist?articleId=${article.id}" );
-	}); */
+
+	//$(function(){
+		//$("#commentList").load("/commnent/getlist?articleId=${article.id}" );
+	//});
 	
 	function commnent(){
 		
@@ -61,9 +61,9 @@
 			data:{content:retext,articleId:id},
 			url:"/commnent/post",
 			success:function(msg){
-				if(msg=="success"){ 
+				if(msg>0){
 					alert("发表成功") 
-					$("#commentList").load("/commnent/getlist?articleId=${article.id}" );
+					$("#commentList").load("/commnent/getlist?articleId=${article.id}")
 					history.go(0)
 					//location.href="getDetail" 
 				}else{

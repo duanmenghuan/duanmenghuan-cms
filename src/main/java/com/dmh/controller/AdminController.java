@@ -160,12 +160,11 @@ public class AdminController {
 	
 	@RequestMapping("disabled")
 	@ResponseBody
-	public boolean disabled(Integer locked,Integer userid) {
+	public boolean disabled(@RequestParam(defaultValue = "0") Integer locked,Integer userid) {
 		int i = userService.update1(locked,userid);
 		System.out.println(i);
 		return i>0;
 	}
 	
-
 
 }
