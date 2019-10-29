@@ -16,7 +16,7 @@ public interface UserMapper {
             + "values(#{username},#{password},#{gender},now())")
     int add(User user);
 
-    @Select("SELECT id,username,password,role,locked FROM cms_user where username=#{value} AND locked = '0'  limit 1")
+    @Select("SELECT id,username,password,role,locked,picture FROM cms_user where username=#{value} AND locked = '0'  limit 1")
     User findByName(String username);
 
     @Select("select * from cms_user where id=#{id}")
@@ -30,6 +30,10 @@ public interface UserMapper {
 
     @Select("SELECT * FROM cms_user WHERE username=#{name}")
     List<User> listusername(@Param("name") String name);
+
+
+    @Update("update cms_user set picture=#{picture} where id=#{id}")
+    int addportrait(User user);
 
 
 }

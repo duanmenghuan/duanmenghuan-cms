@@ -1,3 +1,4 @@
+<%@ page import="com.duanmenghuan.bean.User" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <nav class="navbar navbar-light bg-light">
@@ -21,7 +22,9 @@
             <c:when test="${sessionScope.SESSION_USER_KEY != null}">
                 <li class="nav-item">
                     <a class="nav-link" href="/my/home">
-                        <img alt="" src="/resource/images/default_avatar.png" style="max-height: 2.5rem"
+
+
+                        <img alt="" src="/pic/${sessionScope.SESSION_USER_KEY.picture}" style="max-height: 2.5rem"
                              class="rounded img-fluid">
                     </a>
                 </li>

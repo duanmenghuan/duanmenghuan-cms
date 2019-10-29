@@ -13,6 +13,8 @@ import com.duanmenghuan.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 
 /**
  * @author duanmenghuan
@@ -91,6 +93,13 @@ public class UserServiceImpl implements UserService {
         // TODO Auto-generated method stub
         return userMapper.userlist1(locked, userid);
     }
+
+    @Override
+    public int addportrait(User user) {
+        return userMapper.addportrait(user);
+    }
+
+
 
 
 }

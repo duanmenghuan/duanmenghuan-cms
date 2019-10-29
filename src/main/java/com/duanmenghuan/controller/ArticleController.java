@@ -239,7 +239,7 @@ public class ArticleController {
      * @throws IOException
      * @throws IllegalStateException
      */
-    public void processFile(MultipartFile file, Article article) throws IllegalStateException, IOException {
+    public  void processFile(MultipartFile file, Article article) throws IllegalStateException, IOException {
         if (file.isEmpty() || "".equals(file.getOriginalFilename())
                 || file.getOriginalFilename().lastIndexOf('.') < 0) {
             article.setPicture("");

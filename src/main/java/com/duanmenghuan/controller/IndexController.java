@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.duanmenghuan.bean.Blogroll;
 import com.duanmenghuan.service.BolgrollService;
-import com.sun.org.apache.xml.internal.resolver.readers.TR9401CatalogReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

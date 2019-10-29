@@ -31,8 +31,10 @@
             <li class="list-group-item  text-center"><a class="channel"
                                                         href="javascript:void(0)" class="list-group-item"
                                                         data="/commnent/getmylist">我的评论</a></li>
+
             <li class="list-group-item  text-center"><a class="channel"
-                                                        href="javascript:void(0)" class="list-group-item">上传头像</a></li>
+                                                        href="javascript:void(0)" class="list-group-item" data="/user/portrait">上传头像</a>
+            </li>
             <li class="list-group-item  text-center"><a class="channel"
                                                         href="javascript:void(0)" class="list-group-item">个人设置</a></li>
             <li class="list-group-item  text-center"><a class="channel"

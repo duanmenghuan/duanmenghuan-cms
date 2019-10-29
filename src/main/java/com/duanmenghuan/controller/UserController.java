@@ -20,6 +20,15 @@ import com.duanmenghuan.service.ArticleService;
 import com.duanmenghuan.service.UserService;
 import com.duanmenghuan.web.PageUtils;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 
 @Controller
 @RequestMapping("user")
@@ -155,4 +164,57 @@ public class UserController {
         return articleService.remove(id) > 0;
     }
 
+    /**
+     * 进入上传头像页面
+     */
+    @GetMapping("portrait")
+    public String portrait(){
+        return "/my/portrait";
+    }
+
+    /**
+     * 上传头像动作
+     * @param request
+     * @param file
+     * @return
+     */
+    @PostMapping("portrait")
+    public  String portrait(HttpServletRequest request, MultipartFile file) throws IOException {
+        User user = (User) request.getSession().getAttribute("SESSION_USER_KEY");
+        processFile(file,user);
+        int i = userService.addportrait(user);
+        return "redirect:home";
+    }
+
+
+    /**
+     * 处理接收到的文件
+     */
+
+    private void processFile(MultipartFile file,User user) throws IllegalStateException, IOException {
+
+
+        // 原来的文件名称
+        System.out.println("file.isEmpty() :" + file.isEmpty()  );
+        System.out.println("file.name :" + file.getOriginalFilename());
+
+        if(file.isEmpty()||"".equals(file.getOriginalFilename()) || file.getOriginalFilename().lastIndexOf('.')<0 ) {
+            user.setPicture("");
+            return;
+        }
+
+        String originName = file.getOriginalFilename();
+        String suffixName = originName.substring(originName.lastIndexOf('.'));
+        SimpleDateFormat sdf=  new SimpleDateFormat("yyyyMMdd");
+        String path = "d:/pic/" + sdf.format(new Date());
+        File pathFile = new File(path);
+        if(!pathFile.exists()) {
+            pathFile.mkdir();
+        }
+        String destFileName = path + "/" +  UUID.randomUUID().toString() + suffixName;
+        File distFile = new File( destFileName);
+        file.transferTo(distFile);//文件另存到这个目录下边
+        user.setPicture(destFileName.substring(7));
+
+    }
 }

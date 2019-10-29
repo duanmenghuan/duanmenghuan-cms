@@ -7,15 +7,5 @@ public interface CommentService {
 
     int pinglun(Comment comment);
 
-
-   
-
-
-   
-
-
-
-
-
 	PageInfo<Comment> listss(Integer id, int page);
 }

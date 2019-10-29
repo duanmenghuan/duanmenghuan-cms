@@ -3,6 +3,8 @@ package com.duanmenghuan.service;
 import com.duanmenghuan.bean.User;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface UserService {
 
     int register(User user);
@@ -21,5 +23,7 @@ public interface UserService {
 
     int update1(int locked, int userid);
 
+
+    int addportrait(User user);
 
 }
